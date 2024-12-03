@@ -1,17 +1,20 @@
-// Connect to DOM elements
-const boardDiv = document.getElementById('board');
 const statusDiv = document.getElementById('status');
 
-// Base URL for the backend API hosted on your EC2 instance
-const API_BASE_URL = 'http://13.56.140.126:5000';
+// Update the API_BASE_URL to point to the EC2 instance's public IP and backend port
+const API_BASE_URL = 'http://54.241.84.38:5000';
 
-// Function to fetch some data from the backend API
-async function fetchData() {
+async function fetchCryptoData() {
     try {
-        const response = await fetch(`${API_BASE_URL}/data`); // Replace '/data' with the actual backend route
+        // Use the updated API_BASE_URL
+        const response = await fetch(`${API_BASE_URL}/crypto`);
         if (response.ok) {
             const data = await response.json();
-            statusDiv.innerText = `Data received: ${JSON.stringify(data)}`;
+            statusDiv.innerText = `
+                Min Factor: ${data.min_factor}\n
+                Min Path: ${JSON.stringify(data.min_path)}\n
+                Max Factor: ${data.max_factor}\n
+                Max Path: ${JSON.stringify(data.max_path)}
+            `;
         } else {
             statusDiv.innerText = `Error: ${response.statusText}`;
         }
@@ -20,25 +23,6 @@ async function fetchData() {
     }
 }
 
-// Function to reset the board (or perform another action)
-function resetBoard() {
-    boardDiv.innerHTML = ''; // Clear the board content
-    statusDiv.innerText = 'Board reset!';
-    // Optionally, you can send a request to the backend to reset a game or state
-}
-
-// Initialize the page or attach event listeners
-function init() {
-    // Add event listeners, e.g., for buttons
-    const resetButton = document.querySelector('button[onclick="resetBoard()"]');
-    if (resetButton) {
-        resetButton.addEventListener('click', resetBoard);
-    }
-
-    // Fetch initial data from the backend
-    fetchData();
-}
-
-// Run the init function once the DOM content is loaded
-document.addEventListener('DOMContentLoaded', init);
+// Fetch the crypto data once the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', fetchCryptoData);
 

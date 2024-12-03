@@ -1,0 +1,28 @@
+body {
+  box-sizing: border-box;
+  font-family: 'Source Sans Pro', sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+.heading-primary {
+  font-size: 6rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-align: center;
+}
+
+.projects__row {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.projects__row-img-cont {
+  max-width: 50%;
+}
+
+.projects__row-content {
+  max-width: 50%;
+}
+

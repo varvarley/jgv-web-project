@@ -1,10 +1,20 @@
-# Use the official Nginx image as the base
-FROM nginx:alpine
+# Use Node.js as a builder for the frontend
+FROM node:14 AS builder
 
-# Copy the static content (HTML, JS) into Nginx's HTML directory
-COPY index.html /usr/share/nginx/html/
-COPY app.js /usr/share/nginx/html/
+# Set working directory
+WORKDIR /app
 
-# Expose port 80
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy all frontend files
+COPY . .
+
+# Use Nginx to serve the frontend
+FROM nginx:latest AS production
+COPY --from=builder /app /usr/share/nginx/html
 EXPOSE 80
 
